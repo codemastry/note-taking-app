@@ -1,9 +1,10 @@
 import React from "react";
 import { Alert, Button, Card, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import UserService from "../../services/user-service";
 
 export default function Register() {
-    const [showAlert, setShowAlert] = React.useState(false);
+    const [alert, setAlert] = React.useState({ show: false, message: '', variant: 'success' });
     const [registerInput, setRegisterInput] = React.useState({
         username: '',
         password: '',
@@ -17,16 +18,22 @@ export default function Register() {
         });
     }
 
-    const _handleSubmit = (event) => {
+    const _handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(registerInput);
+        try {
+            setAlert(prevState => ({ ...prevState, show: false }));
+            const result = await UserService.register(registerInput);
+            setAlert({ variant: "success", message: "Registration successful!", show: true });
+            setRegisterInput({ username: '', password: '', retypePassword: '' });
+        }
+        catch (error) {
+            setAlert({ variant: "danger", message: error.Message, show: true });
+        }
     }
     return (
         <>
-            {showAlert &&
-                <Alert variant="success">
-                    A simple success alert—check it out!
-                </Alert>
+            {alert.show &&
+                <Alert variant={alert.variant}>{alert.message}</Alert>
             }
             <Card>
                 <Card.Header>Create an account</Card.Header>

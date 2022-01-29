@@ -18,3 +18,14 @@
     box-shadow: 1px 2px 3px #666;
     cursor: pointer;
 }
+
+
+.ql-editor {
+    min-height: 300px;
+}
+
+.no-note {
+    margin-top: 30px;
+    border: dashed 1px #ccc;
+    padding: 30px 10px;
+}
